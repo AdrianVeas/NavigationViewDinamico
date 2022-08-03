@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mnuNuevo"
+        android:icon="@drawable/iconnuevo"
+        android:orderInCategory="100"
+        android:title="Nuevo"
+        app:showAsAction="always|never"></item>
+    <item
+        android:id="@+id/mnuBuscar"
+        android:icon="@drawable/iconbuscar"
+        android:orderInCategory="101"
+        android:title="Buscar"
+        app:showAsAction="never|ifRoom"></item>
+    <item android:id="@+id/mnuSettings"
+        android:title="Config"
+        android:orderInCategory="102"
+        android:icon="@drawable/iconsettings"
+        app:showAsAction="never"></item>
+</menu>

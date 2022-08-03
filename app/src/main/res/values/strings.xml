@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">NavigationView</string>
+    <string name="login_in_app">LOGIN IN APP</string>
+    <string name="user_name">USER NAME:</string>
+    <string name="enter">Enter</string>
+    <string name="password">PASSWORD:</string>
+    <string name="second_activity">SECOND ACTIVITY</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="regresar">Regresar</string>
+</resources>
