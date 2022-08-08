@@ -1,0 +1,2 @@
+# NavigationViewDinamico
+![principal]()
