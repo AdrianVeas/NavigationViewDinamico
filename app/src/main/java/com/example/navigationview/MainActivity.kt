@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.navigationview.modelos.users
 import com.example.navigationview.modelos.users.Companion.JsonObjectsBuild
 import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     //var toolbar: Toolbar? = null
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     val listauser: String = "[{\"nickname\":\"USER1\", \"password\":\"12345\", \"urlimage\":\"ic_user1_foreground\", \"typeuser\":\"Admin\" }," +
             "{\"nickname\":\"USER2\", \"password\":\"12345\", \"urlimage\":\"ic_user2_foreground\" , \"typeuser\":\"Student\"}," +
             "{\"nickname\":\"USER3\", \"password\":\"12345\", \"urlimage\":\"ic_user3_foreground\", \"typeuser\":\"Profesor\"}]"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         try{
             user = findViewById(R.id.editusername)
             password = findViewById(R.id.editpassword)
-            val lstUser = JSONArray(listauser)
-            val lstUsuarios: ArrayList<users> = JsonObjectsBuild(lstUser)
+
+            val lstUserArray = JSONArray(listauser)
+            val lstUsuarios: ArrayList<users> = JsonObjectsBuild(lstUserArray)
             var confirmation = "N"
             for (users in lstUsuarios){
                 if(users.nickname == user.text.toString()){

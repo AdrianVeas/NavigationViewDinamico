@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.example.navigationview.modelos.settingsuser
 import com.example.navigationview.modelos.users
 import com.google.android.material.navigation.NavigationView
 import org.json.JSONArray
@@ -27,10 +28,18 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
     private lateinit var imagev : ImageView
     private lateinit var nickname: TextView
     private lateinit var txttypeuser: TextView
+    private lateinit var  lstsettinguserArray: JSONArray
+    var itemnew : String = "<item\n" +
+            "            android:id=\"@+id/menu_seccion_1\"\n" +
+            "            android:icon=\"@drawable/iconmenu\"\n" +
+            "            android:title=\"Sección 1\"/>"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        val listsettinguser : String = "[{\"typeuser\" : \"Admin\", \"settings\" : [\"Admin Setting 1\", \"Admin Setting 2\", \"Admin Setting 2\"]}," +
+                "{\"typeuser\" : \"Student\", \"settings\" : [\"Student Setting 1\", \"Student Setting 2\", \"Student Setting 2\"]}," +
+                "{\"typeuser\" : \"Profesor\", \"settings\" : [\"Profesor Setting 1\", \"Profesor Setting 2\", \"Profesor Setting 2\"]}]"
         try {
             toolbar = findViewById(R.id.toolbar);
             toolbar!!.title = "App UTEQ"
@@ -41,7 +50,6 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
 
             navView = findViewById(R.id.nav_view)
             navView.setNavigationItemSelectedListener(this)
-
 
             //Extract data sent of main activity
             val bundle = intent.extras
@@ -62,6 +70,7 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
                 }
             }
 
+
             cabecera = navView.getHeaderView(0)
             //Change Name
 
@@ -71,7 +80,21 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
             //Change Image
             val idimage: Int = resources.getIdentifier(urlimage, "drawable", packageName)
 
-
+            //Extraer Permisos
+            navView.menu.clear()
+            var CONFIRMATION = 0
+            lstsettinguserArray = JSONArray(listsettinguser)
+            val lstsettinguser: ArrayList<settingsuser> = settingsuser.JsonObjectsBuild(lstsettinguserArray)
+            for (settinguser in lstsettinguser){
+                if(settinguser.typeuser==typeuser){
+                    lstsettinguserArray = settinguser.settings!!
+                    for (i in 0 until lstsettinguserArray.length()){
+                        navView.menu.add(lstsettinguserArray.getString(i))
+                        navView.menu.getItem(i).setIcon(R.drawable.iconmenu)
+                    }
+                    CONFIRMATION = 1
+                }
+            }
 
             imagev = cabecera.findViewById(R.id.profile_image)
             imagev.setImageResource(idimage)
@@ -80,22 +103,22 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
             txttypeuser = cabecera.findViewById(R.id.txttypeuser)
             txttypeuser.text = typeuser
 
-            if (typeuser == "Admin"){
+            if (typeuser == "Admin" && CONFIRMATION == 1){
                 Toast.makeText(applicationContext, "Welcome Admin", Toast.LENGTH_SHORT).show()
-                navView.menu.clear()
-                navView.inflateMenu(R.menu.menuadmin)
+                //navView.menu.clear()
+                //navView.inflateMenu(R.menu.menuadmin)
             }
             else{
-                if (typeuser == "Student"){
+                if (typeuser == "Student"&& CONFIRMATION == 1){
                     Toast.makeText(applicationContext, "Welcome Student", Toast.LENGTH_SHORT).show()
-                    navView.menu.clear()
-                    navView.inflateMenu(R.menu.menustudent)
+                    //navView.menu.clear()
+                    //navView.inflateMenu(R.menu.menustudent)
                 }
                 else{
-                    if (typeuser == "Profesor"){
+                    if (typeuser == "Profesor"&& CONFIRMATION == 1){
                         Toast.makeText(applicationContext, "Welcome Profesor", Toast.LENGTH_SHORT).show()
-                        navView.menu.clear()
-                        navView.inflateMenu(R.menu.menuprofesor)
+                        //navView.menu.clear()
+                        //navView.inflateMenu(R.menu.menuprofesor)
                     }
                     else{
                         Toast.makeText(applicationContext, "Welcome Error", Toast.LENGTH_SHORT).show()
@@ -125,8 +148,8 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-
-        var fragment: Fragment? = null
+        /*
+        val fragment: Fragment? = null
 
         when (item.itemId) {
             R.id.menu_seccion_1 -> {
@@ -151,9 +174,8 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
+        drawerLayout.closeDrawer(GravityCompat.START)*/
         return true
-
 
     }
 
