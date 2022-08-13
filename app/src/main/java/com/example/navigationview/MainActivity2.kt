@@ -29,17 +29,15 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
     private lateinit var nickname: TextView
     private lateinit var txttypeuser: TextView
     private lateinit var  lstsettinguserArray: JSONArray
-    var itemnew : String = "<item\n" +
-            "            android:id=\"@+id/menu_seccion_1\"\n" +
-            "            android:icon=\"@drawable/iconmenu\"\n" +
-            "            android:title=\"Sección 1\"/>"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
-        val listsettinguser : String = "[{\"typeuser\" : \"Admin\", \"settings\" : [\"Admin Setting 1\", \"Admin Setting 2\", \"Admin Setting 2\"]}," +
-                "{\"typeuser\" : \"Student\", \"settings\" : [\"Student Setting 1\", \"Student Setting 2\", \"Student Setting 2\"]}," +
-                "{\"typeuser\" : \"Profesor\", \"settings\" : [\"Profesor Setting 1\", \"Profesor Setting 2\", \"Profesor Setting 2\"]}]"
+        val listsettinguser : String =
+                "[{\"typeuser\" : \"Admin\", \"settings\" : [\"Admin Setting 1\", \"Admin Setting 2\", \"Admin Setting 3\"]}," +
+                "{\"typeuser\" : \"Student\", \"settings\" : [\"Student Setting 1\", \"Student Setting 2\", \"Student Setting 3\"]}," +
+                "{\"typeuser\" : \"Profesor\", \"settings\" : [\"Profesor Setting 1\", \"Profesor Setting 2\", \"Profesor Setting 3\"]}]"
         try {
             toolbar = findViewById(R.id.toolbar);
             toolbar!!.title = "App UTEQ"
@@ -65,8 +63,6 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
                     urlimage = users.urlimage.toString()
                     typeuser = users.typeuser.toString()
                     break
-                } else {
-                    //Toast.makeText(applicationContext, "Error User or Password", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -82,7 +78,6 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
 
             //Extraer Permisos
             navView.menu.clear()
-            var CONFIRMATION = 0
             lstsettinguserArray = JSONArray(listsettinguser)
             val lstsettinguser: ArrayList<settingsuser> = settingsuser.JsonObjectsBuild(lstsettinguserArray)
             for (settinguser in lstsettinguser){
@@ -92,7 +87,6 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
                         navView.menu.add(lstsettinguserArray.getString(i))
                         navView.menu.getItem(i).setIcon(R.drawable.iconmenu)
                     }
-                    CONFIRMATION = 1
                 }
             }
 
@@ -103,30 +97,17 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
             txttypeuser = cabecera.findViewById(R.id.txttypeuser)
             txttypeuser.text = typeuser
 
-            if (typeuser == "Admin" && CONFIRMATION == 1){
-                Toast.makeText(applicationContext, "Welcome Admin", Toast.LENGTH_SHORT).show()
-                //navView.menu.clear()
-                //navView.inflateMenu(R.menu.menuadmin)
-            }
-            else{
-                if (typeuser == "Student"&& CONFIRMATION == 1){
+            when (typeuser){
+                "Admin" ->{
+                    Toast.makeText(applicationContext, "Welcome Admin", Toast.LENGTH_SHORT).show()
+                }
+                "Student"-> {
                     Toast.makeText(applicationContext, "Welcome Student", Toast.LENGTH_SHORT).show()
-                    //navView.menu.clear()
-                    //navView.inflateMenu(R.menu.menustudent)
                 }
-                else{
-                    if (typeuser == "Profesor"&& CONFIRMATION == 1){
-                        Toast.makeText(applicationContext, "Welcome Profesor", Toast.LENGTH_SHORT).show()
-                        //navView.menu.clear()
-                        //navView.inflateMenu(R.menu.menuprofesor)
-                    }
-                    else{
-                        Toast.makeText(applicationContext, "Welcome Error", Toast.LENGTH_SHORT).show()
-                    }
+                "Profesor"->{
+                    Toast.makeText(applicationContext, "Welcome Profesor", Toast.LENGTH_SHORT).show()
                 }
             }
-
-
 
         } catch (ex: Exception) {
             Toast.makeText(applicationContext, "Error: " + ex.message, Toast.LENGTH_SHORT).show()
@@ -148,18 +129,47 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        /*
-        val fragment: Fragment? = null
 
-        when (item.itemId) {
-            R.id.menu_seccion_1 -> {
-                fragment = Fragment1()
+        var fragment: Fragment? = null
+        when (typeuser){
+            "Admin" ->{
+                when (item.title){
+                    "Admin Setting 1"->{
+                        fragment = Fragment1()
+                    }
+                    "Admin Setting 2"->{
+                        fragment = Fragment2()
+                    }
+                    "Admin Setting 3"->{
+                        fragment = Fragment3()
+                    }
+                }
             }
-            R.id.menu_seccion_2 -> {
-                fragment = Fragment2()
+            "Student"->{
+                when (item.title){
+                    "Student Setting 1"->{
+                        fragment = Fragment1()
+                    }
+                    "Student Setting 2"->{
+                        fragment = Fragment2()
+                    }
+                    "Student Setting 3"->{
+                        fragment = Fragment3()
+                    }
+                }
             }
-            R.id.menu_seccion_3 -> {
-                fragment = Fragment3()
+            "Profesor"->{
+                when (item.title){
+                    "Profesor Setting 1"->{
+                        fragment = Fragment1()
+                    }
+                    "Profesor Setting 2"->{
+                        fragment = Fragment2()
+                    }
+                    "Profesor Setting 3"->{
+                        fragment = Fragment3()
+                    }
+                }
             }
         }
 
@@ -174,7 +184,7 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)*/
+        drawerLayout.closeDrawer(GravityCompat.START)
         return true
 
     }
