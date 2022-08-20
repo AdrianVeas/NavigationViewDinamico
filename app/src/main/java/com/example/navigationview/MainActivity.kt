@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     if(confirmation == "Y") {
                         bundle.putString("user", user.text.toString())
-                        bundle.putString("listusers", listauser)
+                        bundle.putString("listusers", response)
 
                         intent.putExtras(bundle)
                         startActivity(intent)
