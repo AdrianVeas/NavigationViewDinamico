@@ -12,6 +12,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.navigationview.modelos.settingsuser
 import com.example.navigationview.modelos.users
 import com.google.android.material.navigation.NavigationView
@@ -29,15 +32,17 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
     private lateinit var nickname: TextView
     private lateinit var txttypeuser: TextView
     private lateinit var  lstsettinguserArray: JSONArray
+    private lateinit var url :  String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
-        val listsettinguser : String =
+        /*val listsettinguser : String =
                 "[{\"typeuser\" : \"Admin\", \"settings\" : [\"Admin Setting 1\", \"Admin Setting 2\", \"Admin Setting 3\"]}," +
                 "{\"typeuser\" : \"Student\", \"settings\" : [\"Student Setting 1\", \"Student Setting 2\", \"Student Setting 3\"]}," +
                 "{\"typeuser\" : \"Profesor\", \"settings\" : [\"Profesor Setting 1\", \"Profesor Setting 2\", \"Profesor Setting 3\"]}]"
+        */
         try {
             toolbar = findViewById(R.id.toolbar);
             toolbar!!.title = "App UTEQ"
@@ -78,17 +83,29 @@ class MainActivity2 : AppCompatActivity(), View.OnClickListener,
 
             //Extraer Permisos
             navView.menu.clear()
-            lstsettinguserArray = JSONArray(listsettinguser)
-            val lstsettinguser: ArrayList<settingsuser> = settingsuser.JsonObjectsBuild(lstsettinguserArray)
-            for (settinguser in lstsettinguser){
-                if(settinguser.typeuser==typeuser){
-                    lstsettinguserArray = settinguser.settings!!
-                    for (i in 0 until lstsettinguserArray.length()){
-                        navView.menu.add(lstsettinguserArray.getString(i))
-                        navView.menu.getItem(i).setIcon(R.drawable.iconmenu)
+            url = "https://mocki.io/v1/88370cfb-e8b5-4ab1-9f68-14e7b2819c88"
+
+            val queue = Volley.newRequestQueue(this)
+            val stringRequest = StringRequest(
+                Request.Method.GET, url,
+                { response ->
+                    lstsettinguserArray = JSONArray(response)
+                    val lstsettinguser: ArrayList<settingsuser> = settingsuser.JsonObjectsBuild(lstsettinguserArray)
+                    for (settinguser in lstsettinguser){
+                        if(settinguser.typeuser==typeuser){
+                            lstsettinguserArray = settinguser.settings!!
+                            for (i in 0 until lstsettinguserArray.length()){
+                                navView.menu.add(lstsettinguserArray.getString(i))
+                                navView.menu.getItem(i).setIcon(R.drawable.iconmenu)
+                            }
+                        }
                     }
-                }
-            }
+                },
+                { error ->
+                    Toast.makeText(applicationContext, error.message, Toast.LENGTH_SHORT).show()})
+
+
+            queue.add(stringRequest)
 
             imagev = cabecera.findViewById(R.id.profile_image)
             imagev.setImageResource(idimage)
